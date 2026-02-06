@@ -1,0 +1,236 @@
+/* Global Styles */
+:root {
+    --primary-color: #2fb4d6;
+    /* Light Blue similar to Shironeko UI */
+    --accent-color: #f7d643;
+    /* Gold/Yellow for accents */
+    --bg-color: #f0f8ff;
+    /* Very light blue background */
+    --panel-bg: #ffffff;
+    --text-color: #333333;
+    --border-radius: 12px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --header-height: 50px;
+    /* Fixed header for table */
+    --font-heading: 'M PLUS Rounded 1c', sans-serif;
+    --font-body: 'Sawarabi Gothic', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-y: scroll;
+    /* Always show scrollbar to prevent shift */
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.main-header {
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+
+.main-header h1 {
+    font-family: var(--font-heading);
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 2rem;
+    text-shadow: 1px 1px 0px #fff, 2px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* Panels */
+.search-panel,
+.results-panel {
+    background: var(--panel-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(47, 180, 214, 0.2);
+}
+
+.search-panel-header h2 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-top: 0;
+    border-bottom: 2px solid var(--accent-color);
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Search Grid */
+.search-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(47, 180, 214, 0.2);
+}
+
+.search-status {
+    text-align: right;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Results Table */
+.table-container {
+    overflow-x: auto;
+    max-height: 60vh;
+    /* Fixed height for vertical scrolling */
+    position: relative;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+    /* Ensure table doesn't get too squished */
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    background-color: var(--primary-color);
+    z-index: 10;
+}
+
+th {
+    color: white;
+    padding: 12px 10px;
+    text-align: left;
+    font-weight: bold;
+    white-space: nowrap;
+    font-family: var(--font-heading);
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    color: #444;
+}
+
+/* Specific Columns */
+.col-name {
+    white-space: nowrap;
+    width: 1%;
+    /* Trick to shrink fit content */
+}
+
+/* .col-cv removed to allow wrapping */
+
+tr:hover {
+    background-color: #f9fcff;
+}
+
+/* Icon columns */
+.col-icon {
+    width: 60px;
+    text-align: center;
+}
+
+.icon-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.row-icon {
+    /* Sizing controlled by JS onload (1/6 scale) */
+    vertical-align: middle;
+    margin-right: 5px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    /* background-color: #eee; Remove placeholder bg as it looks bad with transparent pngs if any */
+    border-radius: 4px;
+    /* transition: transform 0.2s; */
+}
+
+.icon-text {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* Utility */
+.hidden {
+    display: none !important;
+}
+
+.loading-msg,
+.error-msg,
+.no-result {
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+    color: #777;
+}
+
+.error-msg {
+    color: #d9534f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 5px;
+    }
+
+    .main-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .search-grid {
+        grid-template-columns: 1fr;
+        /* Stack vertically on mobile */
+    }
+
+    /* Hide less important columns on mobile if needed, or allow scroll */
+    .desktop-only {
+        display: none;
+    }
+}
