@@ -155,18 +155,32 @@ td {
 
 /* Specific Columns */
 .col-name {
-    white-space: nowrap;
     width: 1%;
     /* Trick to shrink fit content */
 }
 
 /* .col-cv removed to allow wrapping */
 
-tr:hover {
+tbody tr:hover {
     background-color: #f9fcff;
 }
 
 /* Icon columns */
+.col-icon-main {
+    width: 60px;
+    text-align: center;
+    padding: 5px;
+}
+
+.char-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+}
+
 .col-icon {
     width: 60px;
     text-align: center;
@@ -194,6 +208,11 @@ tr:hover {
 .icon-text {
     font-size: 0.75rem;
     color: #666;
+}
+
+.col-gc {
+    text-align: center;
+    font-weight: bold;
 }
 
 /* Utility */
