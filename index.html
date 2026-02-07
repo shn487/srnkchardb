@@ -81,7 +81,7 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="filter-category">カテゴリー</label>
+                        <label for="filter-category">イベントカテゴリー</label>
                         <input type="text" id="filter-category" placeholder="カテゴリー検索...">
                     </div>
                     <div class="filter-group">
@@ -89,6 +89,14 @@
                         <select id="filter-era">
                             <option value="">全て</option>
                             <!-- Options populated by JS (2014~Current) -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-gc">パラメーター調整有無（GC）</label>
+                        <select id="filter-gc">
+                            <option value="">全て</option>
+                            <option value="無">無</option>
+                            <option value="有">有</option>
                         </select>
                     </div>
                 </div>
@@ -104,6 +112,7 @@
                         <thead>
                             <tr>
                                 <!-- Headers matching requirements -->
+                                <th class="col-icon-main"></th>
                                 <th>レアリティ</th>
                                 <th>キャラクター名</th>
                                 <th>声優</th>
@@ -112,7 +121,8 @@
                                 <th class="desktop-only">クラス</th>
                                 <th class="col-icon">エレメント</th>
                                 <th class="desktop-only">タイプ</th>
-                                <th>カテゴリー</th>
+                                <th>パラメーター調整有無（GC）</th>
+                                <th>イベントカテゴリー</th>
                                 <th>年代</th>
                             </tr>
                         </thead>
@@ -135,6 +145,4 @@
     <script src="js/script.js"></script>
 </body>
 
-
 </html>
-
