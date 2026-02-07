@@ -1,5 +1,4 @@
 // Global state
-// Global state
 const state = {
     // API Endpoints
     apiEndpoint: 'https://script.google.com/macros/s/AKfycbwE4C6Uqfa33TFIl2HYZYYnsNH3R2AvkcE0ySRcleE7BxsU94tUNs3RGRTeGNLN7Rl52A/exec',
@@ -17,7 +16,8 @@ const state = {
         type: '',
         class: '',
         category: '',
-        era: ''
+        era: '',
+        gc: ''
     }
 };
 
@@ -39,6 +39,7 @@ const elements = {
         class: document.getElementById('filter-class'),
         category: document.getElementById('filter-category'),
         era: document.getElementById('filter-era'),
+        gc: document.getElementById('filter-gc'),
     }
 };
 
@@ -144,6 +145,15 @@ function getElementIcon(element) {
     return found ? found.icon : null;
 }
 
+// GC status logic: check multiple potential keys and handle "無" value in spreadsheet
+function getGCStatusValue(char) {
+    const rawVal = char['GC後のパラメーター調整の有無_最終調整日'] || char['GC後のパラメーター調整の有無'] || '';
+    const strVal = rawVal.toString().trim();
+    // If empty, or explicitly "無", it is considered "No adjustment"
+    if (!strVal || strVal === '無') return '無';
+    return '有';
+}
+
 // --- Global Helper for Icon Resizing ---
 window.resizeIcon = function (img) {
     if (img.naturalWidth) {
@@ -194,9 +204,20 @@ function renderTable(data) {
         const jobName = char['職'] || '-';
         const elName = char['エレメント'] || '-';
 
-        // Cells - Order: Rarity, Name, CV, JobAttr, Job(Icon), Class, Element(Icon), Type, Category, Era
-        // Note: Added onload="resizeIcon(this)" and style="visibility:hidden" to prevent jump
+        // Spec: Added icon column and GC status column
+        // Icon Column
+        const charIconUrl = char['icon'] || '';
+
+        // GC status logic: check multiple potential keys and handle "無" value in spreadsheet
+        const gcStatusClass = getGCStatusValue(char);
+        const rawGC = char['GC後のパラメーター調整の有無_最終調整日'] || char['GC後のパラメーター調整の有無'] || '';
+        const gcDisplay = (gcStatusClass === '有') ? rawGC : '無';
+
+        // Cells - Order: Icon, Rarity, Name, CV, JobAttr, Job(Icon), Class, Element(Icon), Type, GC, Category, Era
         tr.innerHTML = `
+            <td class="col-icon-main">
+                ${charIconUrl ? `<img src="${charIconUrl}" alt="${charName}" class="char-icon">` : ''}
+            </td>
             <td>${rarity}</td>
             <td class="col-name" style="font-weight:bold; color:var(--primary-color);">${charName}</td>
             <td class="col-cv">${cv}</td>
@@ -215,6 +236,7 @@ function renderTable(data) {
                 </div>
             </td>
             <td class="desktop-only">${type}</td>
+            <td class="col-gc">${gcDisplay}</td>
             <td>${category}</td>
             <td>${era}</td>
         `;
@@ -331,6 +353,12 @@ function applyFiltersAndRender() {
         const era = char['年代'] || '';
         if (state.filters.era && era !== state.filters.era) return false;
 
+        // GC (Custom Logic)
+        if (state.filters.gc) {
+            const currentGC = getGCStatusValue(char);
+            if (state.filters.gc !== currentGC) return false;
+        }
+
         return true;
     });
 
@@ -350,7 +378,7 @@ function setupEventListeners() {
     });
 
     // Select fields -> 'change' event
-    const selects = ['rarity', 'job', 'element', 'type', 'class', 'era'];
+    const selects = ['rarity', 'job', 'element', 'type', 'class', 'era', 'gc'];
     selects.forEach(key => {
         if (!elements.filterInputs[key]) return;
         elements.filterInputs[key].addEventListener('change', (e) => {
